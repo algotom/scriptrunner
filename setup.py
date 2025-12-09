@@ -5,8 +5,8 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / "README.md").read_text()
 
 setuptools.setup(
-    name="script-runner-gui",
-    version="1.0.0",
+    name="scriptrunner-gui",
+    version="1.0.1",
     author="Nghia Vo",
     author_email="nvo@bnl.gov",
     description="GUI software for rendering arguments of CLI Python scripts and scheduling runs.",
