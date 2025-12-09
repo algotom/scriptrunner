@@ -1,5 +1,5 @@
 # ScriptRunner
-![ScriptRunner_Logo](ScriptRunner_icon.png)
+![ScriptRunner_Logo](https://github.com/algotom/scriptrunner/raw/main/ScriptRunner_icon.png)
 
 ---
 
@@ -31,25 +31,25 @@ Features
 
     ScriptRunner parses arguments from ArgParse-based CLI scripts and automatically renders them as user-friendly GUI input fields.
 
-    ![Fig1](figs/fig1.png)
+    ![Fig1](https://github.com/algotom/scriptrunner/raw/main/figs/fig1.png)
 
 - **_Run individual scripts or schedule multi-script workflows_**:
 
     Execute a single script on demand, or create a scheduled sequence of multiple scripts. This enables automated data acquisition, processing pipelines, or batch operations without manual intervention.
     
-    ![Fig2](figs/fig2.png)
+    ![Fig2](https://github.com/algotom/scriptrunner/raw/main/figs/fig2.png)
 
 - _**Built-in script editor with side-by-side comparison**_:
 
     Edit Python scripts directly inside the application, no need for external editors like VS Code or Vim. Compare two scripts side-by-side to track modifications or validate parameter changes.
 
-    ![Fig3](figs/fig3.png)
+    ![Fig3](https://github.com/algotom/scriptrunner/raw/main/figs/fig3.png)
 
 - **_Console logging and export_**:
 
     View real-time console output for each script and save logs to a file for debugging, documentation, or reproducibility.
 
-    ![Fig3](figs/fig4.png)
+    ![Fig3](https://github.com/algotom/scriptrunner/raw/main/figs/fig4.png)
 
 
 Installation
