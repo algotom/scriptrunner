@@ -1,4 +1,4 @@
-{% set name = "scriptrunner" %}
+{% set name = "scriptrunner-gui" %}
 {% set version = "1.0.0" %}
 
 package:

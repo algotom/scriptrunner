@@ -5,7 +5,7 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / "README.md").read_text()
 
 setuptools.setup(
-    name="scriptrunner",
+    name="scriptrunner-gui",
     version="1.0.0",
     author="Nghia Vo",
     author_email="nvo@bnl.gov",

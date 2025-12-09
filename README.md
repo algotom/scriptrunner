@@ -61,7 +61,7 @@ for installation.
 
 Using pip:
 ```commandline
-pip install scriptrunner
+pip install scriptrunner-gui
 ```
 Using conda:
 ```commandline
