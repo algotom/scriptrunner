@@ -1,0 +1,38 @@
+{% set name = "scriptrunner" %}
+{% set version = "1.0.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  path: ..
+
+build:
+  number: 0
+  script: "{{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation"
+  noarch: python
+  entry_points:
+    - scriptrunner = scriptrunner.main:main
+
+requirements:
+  host:
+    - python >=3.9
+    - pip
+    - setuptools
+  run:
+    - python >=3.9
+
+test:
+  imports:
+    - scriptrunner
+  commands:
+    - scriptrunner --help
+  requires:
+    - pip
+
+about:
+  home: https://github.com/algotom/scriptrunner
+  license: Apache-2.0
+  license_file: LICENSE
+  summary: GUI software for rendering arguments of CLI Python scripts and scheduling runs
