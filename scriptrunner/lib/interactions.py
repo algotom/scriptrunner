@@ -22,7 +22,10 @@ class ScriptRunnerInteractions(ScriptRunnerRendering):
         super().__init__(initial_folder)
 
         self.script_type = script_type
+        self.show_all_var.set(script_type == "all")
+
         # Connect view events to controller logic
+        self.chk_show_all.config(command=self.populate_script_list)
         self.set_browse_folder_callback(self.browse_folder)
         self.set_refresh_scripts_callback(self.populate_script_list)
 
@@ -110,8 +113,9 @@ class ScriptRunnerInteractions(ScriptRunnerRendering):
         self.script_list.delete(0, tk.END)
         folder = self.current_folder.get()
         files = util.find_possible_scripts(folder)
+        show_all = self.show_all_var.get()
         for script in files:
-            if self.script_type != "cli":
+            if self.script_type != "cli" or show_all:
                 self.script_list.insert(tk.END, script)
             else:
                 if util.get_script_arguments(os.path.join(folder, script))[0]:
@@ -155,7 +159,7 @@ class ScriptRunnerInteractions(ScriptRunnerRendering):
         self.scrollable_frame.grid_columnconfigure(3, weight=1)
 
         ttk.Label(self.scrollable_frame, text=f"{script_name}",
-                  font=(util.FONT_FAMILY, util.FONT_SIZE, "bold"),
+                  font=(util.FONT_FAMILY, util.FONT_SIZE + 1),
                   foreground="#0055aa").grid(row=0, column=0, columnspan=4,
                                              pady=0, sticky="nw", padx=5)
         row = 1
@@ -166,11 +170,9 @@ class ScriptRunnerInteractions(ScriptRunnerRendering):
                 ttk.Label(self.scrollable_frame, text=raw_flag,
                           width=15, anchor="w",
                           font=(util.FONT_FAMILY,
-                                util.PARA_FONT_SIZE, "bold")).grid(row=row,
-                                                                   column=0,
-                                                                   sticky="w",
-                                                                   padx=2,
-                                                                   pady=2)
+                                util.PARA_FONT_SIZE)).grid(row=row, column=0,
+                                                           sticky="w", padx=2,
+                                                           pady=2)
 
                 ttk.Label(self.scrollable_frame, text=f"[{arg_type.__name__}]",
                           width=6, anchor="w", foreground="#0055aa",
@@ -197,21 +199,21 @@ class ScriptRunnerInteractions(ScriptRunnerRendering):
                 self.entries[clean_name] = (entry, arg_type)
                 row += 1
         else:
-            msg = "  No argparse found. This script has no declared arguments"
+            msg = "This script has no declared argparse arguments"
             ttk.Label(self.scrollable_frame, text=msg,
                       width=50, anchor="w",
                       font=(util.FONT_FAMILY,
-                            util.PARA_FONT_SIZE, "bold")).grid(row=1, column=0,
-                                                               sticky="w",
-                                                               padx=2, pady=2)
+                            util.PARA_FONT_SIZE + 1)).grid(row=1, column=0,
+                                                           sticky="w",
+                                                           padx=2, pady=2)
 
         btn_frame = ttk.Frame(self.scrollable_frame)
         btn_frame.grid(row=row + 1, column=0, columnspan=4, pady=10,
                        sticky="ew")
-        ttk.Button(btn_frame, text="Run Now", width=10,
+        ttk.Button(btn_frame, text="Run now", width=10,
                    command=lambda: self.run_script_direct(script_name)).pack(
             side=tk.LEFT, padx=(5, 0))
-        ttk.Button(btn_frame, text="Stop Run", width=10,
+        ttk.Button(btn_frame, text="Stop run", width=10,
                    command=self.stop_script).pack(side=tk.LEFT, padx=5)
 
         frame_add = ttk.Frame(btn_frame)
@@ -224,7 +226,7 @@ class ScriptRunnerInteractions(ScriptRunnerRendering):
         self.entry_sched_index = ttk.Entry(frame_add, width=3)
         self.entry_sched_index.insert(0, "-1")
         self.entry_sched_index.pack(side=tk.LEFT, padx=0)
-        ttk.Button(frame_add, text="Add to Schedule", width=15,
+        ttk.Button(frame_add, text="Add to schedule", width=15,
                    command=self.schedule_script).pack(side=tk.LEFT, padx=(5, 0))
 
     def save_current_inputs(self):
@@ -339,7 +341,7 @@ class ScriptRunnerInteractions(ScriptRunnerRendering):
 
         if task['type'] == 'script':
             ttk.Label(self.sched_scroll_frame, text=f"{task['name']}",
-                      font=(util.FONT_FAMILY, 11, "bold"),
+                      font=(util.FONT_FAMILY, util.FONT_SIZE),
                       foreground="#0055aa").grid(row=0, column=0, columnspan=2,
                                                  sticky="w", pady=0, padx=5)
             full_path = os.path.join(self.current_folder.get(), task['name'])
@@ -349,10 +351,10 @@ class ScriptRunnerInteractions(ScriptRunnerRendering):
                 for raw_flag, clean_name, help_text, arg_type, required, \
                         default_val in arguments:
                     ttk.Label(self.sched_scroll_frame, text=raw_flag,
-                              font=(util.FONT_FAMILY, 10)).grid(row=row,
-                                                                column=0,
-                                                                sticky="w",
-                                                                padx=5, pady=2)
+                              font=(util.FONT_FAMILY,
+                                    util.FONT_SIZE - 2)).grid(row=row, column=0,
+                                                              sticky="w",
+                                                              padx=5, pady=2)
                     entry = ttk.Entry(self.sched_scroll_frame, width=20)
                     entry.grid(row=row, column=1, sticky="w", padx=5, pady=2)
                     val = task['params'].get(clean_name, "")
@@ -363,7 +365,7 @@ class ScriptRunnerInteractions(ScriptRunnerRendering):
 
         elif task['type'] == 'sleep':
             ttk.Label(self.sched_scroll_frame, text="Sleep",
-                      font=(util.FONT_FAMILY, 11, "bold"),
+                      font=(util.FONT_FAMILY, util.FONT_SIZE),
                       foreground="#0055aa").grid(row=0, column=0, columnspan=2,
                                                  sticky="w", pady=0, padx=5)
             ttk.Label(self.sched_scroll_frame, text="Duration (seconds):").grid(

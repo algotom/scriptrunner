@@ -294,6 +294,7 @@ class ScriptRunnerRendering(tk.Tk):
 
         self.log_to_file_var = tk.BooleanVar(value=False)
         self.log_file_path_var = tk.StringVar(value="")
+        self.show_all_var = tk.BooleanVar(value=False)
 
         self.process = None
         self.msg_queue = queue.Queue()
@@ -358,7 +359,7 @@ class ScriptRunnerRendering(tk.Tk):
                              font=(util.FONT_FAMILY, util.FONT_SIZE, "italic"))
         self.style.configure("Treeview", rowheight=25)
         self.style.configure("Toggle.TButton",
-                             font=(util.FONT_FAMILY, 10, "bold"))
+                             font=(util.FONT_FAMILY, 11))
         self.style.configure("Small.TButton", padding=2,
                              font=(util.FONT_FAMILY, 9))
 
@@ -403,24 +404,28 @@ class ScriptRunnerRendering(tk.Tk):
         frame.grid(row=0, column=0, sticky="ew", padx=5, pady=(0, 5))
         frame.grid_columnconfigure(1, weight=1)
 
-        ttk.Label(frame, text="Base Folder Path:",
+        ttk.Label(frame, text="Base folder path:",
                   font=(util.FONT_FAMILY, util.FONT_SIZE)).grid(row=0, column=0,
                                                                 padx=5, pady=0)
         ttk.Label(frame, textvariable=self.current_folder, style="Path.TLabel",
                   anchor="w").grid(row=0, column=1, sticky="ew", padx=5, pady=0)
 
-        self.btn_select_base = ttk.Button(frame, text="Select Base")
-        self.btn_select_base.grid(row=0, column=2, padx=5, pady=5)
+        self.chk_show_all = ttk.Checkbutton(frame, text="Show all .py",
+                                            variable=self.show_all_var)
+        self.chk_show_all.grid(row=0, column=2, padx=5, pady=5)
+
+        self.btn_select_base = ttk.Button(frame, text="Select base")
+        self.btn_select_base.grid(row=0, column=3, padx=5, pady=5)
 
         self.btn_refresh_scripts = ttk.Button(frame, text="Refresh")
-        self.btn_refresh_scripts.grid(row=0, column=3, padx=(0, 5), pady=5)
+        self.btn_refresh_scripts.grid(row=0, column=4, padx=(0, 5), pady=5)
 
     def create_interpreter_bar(self):
         frame = ttk.Frame(self, padding=0, relief="groove", borderwidth=1)
         frame.grid(row=1, column=0, sticky="ew", padx=5, pady=0)
         frame.grid_columnconfigure(1, weight=1)
 
-        ttk.Label(frame, text="Python Environment Path:",
+        ttk.Label(frame, text="Python environment path:",
                   font=(util.FONT_FAMILY, util.FONT_SIZE)).grid(row=0, column=0,
                                                                 padx=5, pady=5)
         ttk.Entry(frame, textvariable=self.interpreter_path).grid(row=0,
@@ -438,7 +443,7 @@ class ScriptRunnerRendering(tk.Tk):
         mid_pane = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
         mid_pane.grid(row=2, column=0, sticky="nsew", padx=5, pady=5)
 
-        left_frame = ttk.LabelFrame(mid_pane, text="Available Scripts",
+        left_frame = ttk.LabelFrame(mid_pane, text="   Available scripts",
                                     padding=0)
         mid_pane.add(left_frame, weight=1)
 
@@ -456,7 +461,7 @@ class ScriptRunnerRendering(tk.Tk):
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y, pady=5)
         self.script_list.config(yscrollcommand=scrollbar.set)
 
-        right_frame = ttk.LabelFrame(mid_pane, text="Script Parameters",
+        right_frame = ttk.LabelFrame(mid_pane, text="   Script parameters",
                                      padding=0)
         mid_pane.add(right_frame, weight=3)
 
@@ -492,7 +497,7 @@ class ScriptRunnerRendering(tk.Tk):
                                                               fill=tk.X,
                                                               expand=True)
         self.btn_toggle_sched = ttk.Button(toggle_frame,
-                                           text="▼ Show Scheduler",
+                                           text="▼ Show scheduler",
                                            style="Toggle.TButton",
                                            command=self.toggle_scheduler,
                                            width=20)
@@ -504,13 +509,13 @@ class ScriptRunnerRendering(tk.Tk):
     def toggle_scheduler(self):
         if self.scheduler_visible:
             self.sched_frame.grid_remove()
-            self.btn_toggle_sched.config(text="▼ Show Scheduler")
+            self.btn_toggle_sched.config(text="▼ Show scheduler")
             self.scheduler_visible = False
             self.grid_rowconfigure(4, weight=0)
             self.grid_rowconfigure(5, weight=2)
         else:
             self.sched_frame.grid()
-            self.btn_toggle_sched.config(text="▲ Hide Scheduler")
+            self.btn_toggle_sched.config(text="▲ Hide scheduler")
             self.scheduler_visible = True
             self.grid_rowconfigure(4, weight=1)
             self.grid_rowconfigure(5, weight=1)
@@ -532,7 +537,7 @@ class ScriptRunnerRendering(tk.Tk):
         self.entry_queue_iter.insert(0, "1")
         self.entry_queue_iter.pack(side=tk.LEFT, padx=(0, 5), pady=5)
 
-        self.btn_sched_run = ttk.Button(col_queue, text="Run Queue")
+        self.btn_sched_run = ttk.Button(col_queue, text="Run queue")
         self.btn_sched_run.pack(side=tk.LEFT, padx=(0, 5), pady=5)
 
         self.btn_sched_pause = ttk.Button(col_queue, text="Pause",
@@ -567,7 +572,7 @@ class ScriptRunnerRendering(tk.Tk):
         ttk.Entry(col_sleep, textvariable=self.sleep_position_var,
                   width=4).pack(side=tk.LEFT, padx=2, pady=5)
 
-        self.btn_add_sleep = ttk.Button(col_sleep, text="Add Sleep")
+        self.btn_add_sleep = ttk.Button(col_sleep, text="Add sleep")
         self.btn_add_sleep.pack(side=tk.LEFT, padx=5, pady=5)
 
         sched_pane = ttk.PanedWindow(self.sched_frame, orient=tk.HORIZONTAL)
@@ -681,7 +686,7 @@ class ScriptRunnerRendering(tk.Tk):
             defaultextension=".txt",
             initialdir=initial_dir,
             initialfile=initial_name,
-            title="Select Log File to Save Console Output",
+            title="Select log file to save console output",
             filetypes=(("Text files", "*.txt"), ("All files", "*.*")))
 
         if filepath:
@@ -744,7 +749,7 @@ class ScriptRunnerRendering(tk.Tk):
         log_options_frame.grid_columnconfigure(1, weight=1)
 
         self.log_checkbox = ttk.Checkbutton(log_options_frame,
-                                            text="Console Output |"
+                                            text="Console output |"
                                                  " Save to log file: ",
                                             variable=self.log_to_file_var,
                                             command=self.toggle_log_path_prompt)

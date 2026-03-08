@@ -105,12 +105,6 @@ def get_script_arguments(script_path):
             if kw.arg is None:
                 continue
             kw_map[kw.arg] = kw.value
-        # # dest
-        # dest = clean_name
-        # if "dest" in kw_map and isinstance(kw_map["dest"], ast.Constant):
-        #     if isinstance(kw_map["dest"].value, str):
-        #         dest = kw_map["dest"].value
-        # help
         help_text = ""
         if "help" in kw_map and isinstance(kw_map["help"], ast.Constant):
             if isinstance(kw_map["help"].value, str):
