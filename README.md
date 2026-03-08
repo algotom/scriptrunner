@@ -112,7 +112,8 @@ Usage
 
 - Enable/disable saving console output to a file using the checkbox.
 
-- By default, ScriptRunner only picks and displays ArgParse-based scripts. However, users can choose to display all Python scripts by running:
+- By default, ScriptRunner picks and displays ArgParse-based scripts. However, users can choose to display all Python scripts by running:
   ```commandline
   scriptrunner -t "all"
   ```
+  or tick the box "Show all .py"
