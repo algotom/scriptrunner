@@ -65,7 +65,7 @@ pip install scriptrunner-gui
 ```
 Using conda:
 ```commandline
-conda install -c algotom scriptrunner-gui
+conda install -c conda-forge scriptrunner-gui
 ```
 Once installed, launching ScriptRunner with
 ```commandline
